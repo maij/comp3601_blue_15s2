@@ -1,0 +1,113 @@
+# clock pin for Phoenix Board
+NET "clk" LOC = "A8"; # Bank = 0, Pin name = IO_L32P_0/GCLK6, Type = GCLK, Signal name = GCLK
+
+# Pin assignment for EppCtl
+# Connected to Phoenix onBoard USB controller
+NET "clk" LOC = "A8"; # Bank = 0, Pin name = IO_L32P_0/GCLK6, Type = GCLK, Signal name = GCLK
+
+NET "EppAstb" LOC = "N8"; # Bank = 5, Pin name = IO_L32P_5/GCLK2, Type = GCLK, Signal name = U-FLAGA
+NET "EppDstb" LOC = "P7"; # Bank = 5, Pin name = IO, Type = I/O, Signal name = U-FLAGB
+NET "EppWr" LOC = "N7"; # Bank = 5, Pin name = IO_L30N_5, Type = I/O, Signal name = U-FLAGC
+NET "EppWait" LOC = "N5"; # Bank = , Pin name = IO, Type = I/O, Signal name = U-SLRD
+NET "EppDB<0>" LOC = "N12"; # Bank = 4, Pin name = IO/VREF_4, Type = VREF, Signal name = U-FD0
+NET "EppDB<1>" LOC = "P12"; # Bank = 4, Pin name = IO_L25N_4, Type = I/O, Signal name = U-FD1
+NET "EppDB<2>" LOC = "N11"; # Bank = 4, Pin name = IO_L27P_4/D1, Type = DUAL, Signal name = U-FD2
+NET "EppDB<3>" LOC = "P11"; # Bank = 4, Pin name = IO_L28N_4, Type = I/O, Signal name = U-FD3
+NET "EppDB<4>" LOC = "N10"; # Bank = 4, Pin name = IO_L29P_4, Type = I/O, Signal name = U-FD4
+NET "EppDB<5>" LOC = "P10"; # Bank = 4, Pin name = IO_L30N_4/D2, Type = DUAL, Signal name = U-FD5
+NET "EppDB<6>" LOC = "M10"; # Bank = 4, Pin name = IO_L29N_4, Type = I/O, Signal name = U-FD6
+NET "EppDB<7>" LOC = "R10"; # Bank = 4, Pin name = IO_L30P_4/D3, Type = DUAL, Signal name = U-FD7
+
+NET "led<0>" LOC = "L14";
+NET "led<1>" LOC = "L13";
+NET "led<2>" LOC = "M14";
+NET "led<3>" LOC = "L12";
+NET "led<4>" LOC = "N14";
+NET "led<5>" LOC = "M13";
+NET "led<6>" LOC = "P14";
+NET "led<7>" LOC = "R16";
+
+NET "BTN<0>" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "BTN<0>" LOC = "J13";
+NET "BTN<1>" LOC = "K14";
+NET "BTN<2>" LOC = "K13";
+NET "BTN<3>" LOC = "k12";
+
+# Pin assignment for OnBoardMemCtrl
+# Connected to Phoenix onBoard Cellular RAM and StrataFlash
+
+NET "clk" LOC = "A8"; # Bank = 0, Pin name = IO_L32P_0/GCLK6, Type = GCLK, Signal name = GCLK
+
+NET "MemOE" LOC = "K2"; # Bank = 6, Pin name = IO_L24P_6, Type = I/O, Signal name = OE
+NET "MemWR" LOC = "T3"; # Bank = 5, Pin name = IO_L01N_5/RDWR_B, Type = DUAL, Signal name = WE
+
+NET "RamAdv" LOC = "B1"; # Bank = 7, Pin name = IO_L01P_7/VRN_7, Type = DCI, Signal name = MT-ADV
+NET "RamCS" LOC = "K1"; # Bank = 6, Pin name = IO, Type = I/O, Signal name = MT-CE
+NET "RamClk" LOC = "C2"; # Bank = 7, Pin name = IO_L16N_7, Type = I/O, Signal name = MT-CLK
+NET "RamCRE" LOC = "L2"; # Bank = 6, Pin name = IO_L22P_6, Type = I/O, Signal name = MT-CRE
+NET "RamLB" LOC = "J1"; # Bank = 6, Pin name = IO_L40P_6/VREF_6, Type = VREF, Signal name = MT-LB
+NET "RamUB" LOC = "J2"; # Bank = 6, Pin name = IO_L40N_6, Type = I/O, Signal name = MT-UB
+NET "RamWait" LOC = "C1"; # Bank = 7, Pin name = IO_L01N_7/VRP_7, Type = DCI, Signal name = MT-WAIT
+
+#NET "FlashByte" LOC = "F5"; # Bank = 7, Pin name = IO_L23P_7, Type = I/O, Signal name = BYTE#Cluj Board !!!!!NOT AVAILABLE FOR PHOENIX prototype
+NET "FlashRp" LOC = "T4"; # Bank = 5, Pin name = IO_L10N_5/VRP_5, Type = DCI, Signal name = RP#
+NET "FlashCS" LOC = "E4"; # Bank = 7, Pin name = IO_L21P_7, Type = I/O, Signal name = ST-CE
+NET "FlashStSts" LOC = "R4"; # Bank = 5, Pin name = IO_L10P_5/VRN_5, Type = DCI, Signal name = ST-STS
+
+
+#NET "JA1" LOC = "T14"; # Bank = 4, Pin name = IO, Type = I/O, Signal name = R-JA1
+#NET "JA2" LOC = "R13"; # Bank = 4, Pin name = IO_L01N_4/VRP_4, Type = DCI, Signal name = R-JA2
+#NET "JA3" LOC = "T13"; # Bank = 4, Pin name = IO_L01P_4/VRN_4, Type = DCI, Signal name = R-JA3
+#NET "JA4" LOC = "R12"; # Bank = 4, Pin name = IO_L25P_4, Type = I/O, Signal name = R-JA4
+#NET "JB1" LOC = "T12"; # Bank = 4, Pin name = IO, Type = I/O, Signal name = R-JB1
+#NET "JB2" LOC = "R11"; # Bank = 4, Pin name = IO_L28P_4, Type = I/O, Signal name = R-JB2
+#NET "JB3" LOC = "P8"; # Bank = 5, Pin name = IO_L32N_5/GCLK3, Type = GCLK, Signal name = R-JB3
+#NET "JB4" LOC = "T10"; # Bank = 4, Pin name = IO/VREF_4, Type = VREF, Signal name = R-JB4
+#NET "JC1" LOC = "D5"; # Bank = 0, Pin name = IO/VREF_0, Type = VREF, Signal name = R-JC1
+#NET "JC2" LOC = "P9"; # Bank = 4, Pin name = IO_L31P_4/DOUT/BUSY, Type = DUAL, Signal name = R-JC2
+#NET "JC3" LOC = "A5"; # Bank = 0, Pin name = IO, Type = I/O, Signal name = R-JC3
+#NET "JC4" LOC = "A7"; # Bank = 0, Pin name = IO, Type = I/O, Signal name = R-JC4
+
+
+NET "MemAdr<1>" LOC = "J3";	  	# ADDR1
+NET "MemAdr<2>" LOC = "K5";	  	# ADDR2
+NET "MemAdr<3>" LOC = "L3";		# ADDR3
+NET "MemAdr<4>" LOC = "J4";		# ADDR4
+NET "MemAdr<5>" LOC = "K3";		# ADDR5
+NET "MemAdr<6>" LOC = "H4";	  	# ADDR6
+NET "MemAdr<7>" LOC = "K4";	  	# ADDR7
+NET "MemAdr<8>" LOC = "G3";		# ADDR8
+NET "MemAdr<9>" LOC = "E3";		# ADDR9
+NET "MemAdr<10>" LOC = "F4";		# ADDR10
+NET "MemAdr<11>" LOC = "F5";		# ADDR11
+NET "MemAdr<12>" LOC = "N3";		# ADDR12
+NET "MemAdr<13>" LOC = "L5";		# ADDR13
+NET "MemAdr<14>" LOC = "M3";		# ADDR14
+NET "MemAdr<15>" LOC = "F3";		# ADDR15
+NET "MemAdr<16>" LOC = "L4";		# ADDR16
+NET "MemAdr<17>" LOC = "G4";		# ADDR17
+NET "MemAdr<18>" LOC = "H3";		# ADDR18
+NET "MemAdr<19>" LOC = "G5";		# ADDR19
+NET "MemAdr<20>" LOC = "D3";		# ADDR20
+NET "MemAdr<21>" LOC = "M4";		# ADDR21
+NET "MemAdr<22>" LOC = "A3";	  	# ADDR22
+NET "MemAdr<23>" LOC = "C3";		# ADDR23
+
+NET "MemDB<0>" LOC = "M2" | PULLUP ; # Bank = 6, Pin name = IO_L20N_6, Type = I/O, Signal name = DB0
+NET "MemDB<1>" LOC = "M1" | PULLUP ; # Bank = 6, Pin name = IO_L20P_6, Type = I/O, Signal name = DB1
+NET "MemDB<2>" LOC = "N2" | PULLUP ; # Bank = 6, Pin name = IO_L17N_6, Type = I/O, Signal name = DB2
+NET "MemDB<3>" LOC = "N1" | PULLUP ; # Bank = 6, Pin name = IO_L17P_6/VREF_6, Type = VREF, Signal name = DB3
+NET "MemDB<4>" LOC = "P2" | PULLUP ; # Bank = 6, Pin name = IO_L16N_6, Type = I/O, Signal name = DB4
+NET "MemDB<5>" LOC = "P1" | PULLUP ; # Bank = 6, Pin name = IO_L01P_6/VRN_6, Type = DCI, Signal name = DB5
+NET "MemDB<6>" LOC = "R1" | PULLUP ; # Bank = 6, Pin name = IO_L01N_6/VRP_6, Type = DCI, Signal name = DB6
+NET "MemDB<7>" LOC = "R3" | PULLUP ; # Bank = 5, Pin name = IO_L01P_5/CS_B, Type = DUAL, Signal name = DB7
+NET "MemDB<8>" LOC = "H1" | PULLUP ; # Bank = 7, Pin name = IO_L40N_7/VREF_7, Type = VREF, Signal name = DB8
+NET "MemDB<9>" LOC = "G1" | PULLUP ; # Bank = 7, Pin name = IO_L40P_7, Type = I/O, Signal name = DB9
+NET "MemDB<10>" LOC = "G2" | PULLUP ; # Bank = 7, Pin name = IO, Type = I/O, Signal name = DB10
+NET "MemDB<11>" LOC = "F2" | PULLUP ; # Bank = 7, Pin name = IO_L22N_7, Type = I/O, Signal name = DB11
+NET "MemDB<12>" LOC = "E1" | PULLUP ; # Bank = 7, Pin name = IO_L20N_7, Type = I/O, Signal name = DB12
+NET "MemDB<13>" LOC = "D1" | PULLUP ; # Bank = 7, Pin name = IO_L17N_7, Type = I/O, Signal name = DB13
+NET "MemDB<14>" LOC = "E2" | PULLUP ; # Bank = 7, Pin name = IO_L20P_7, Type = I/O, Signal name = DB14
+NET "MemDB<15>" LOC = "D2" | PULLUP ; # Bank = 7, Pin name = IO_L17P_7, Type = I/O, Signal name = DB15
+
+

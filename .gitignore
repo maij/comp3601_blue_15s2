@@ -1,0 +1,16 @@
+*.xreport
+*.xmsgs
+*.cmd
+*.filter
+*.projectmgr
+*.attr
+*.xwbt
+*.html
+*.vPreview
+*.wdb
+*.edif
+*.xise
+*.gise
+*.tcl
+*.bit
+*.ncd

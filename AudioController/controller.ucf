@@ -1,0 +1,110 @@
+// Push Buttons
+NET "RST"		LOC = "K13";
+NET "BPM_UP"	LOC = "J13";
+NET "BPM_DOWN" LOC = "K14";
+NET "PB_GO"		LOC = "K12";
+NET "PB_GO" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "RST" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "BPM_UP" CLOCK_DEDICATED_ROUTE = FALSE;
+NET "BPM_DOWN" CLOCK_DEDICATED_ROUTE = FALSE;
+
+// LEDs
+NET "LEDS[0]" LOC = "L14";
+NET "LEDS[1]" LOC = "L13";
+NET "LEDS[2]" LOC = "M14";
+NET "LEDS[3]" LOC = "L12";
+NET "LEDS[4]" LOC = "N14";
+NET "LEDS[5]" LOC = "M13";
+NET "LEDS[6]" LOC = "P14";
+NET "LEDS[7]" LOC = "R16";
+
+// Switches
+//NET "MODE[1]"  LOC = "N16";
+//NET "MODE[0]"  LOC = "M15";
+//NET "TONE[5]"  LOC = "M16";
+//NET "TONE[4]"  LOC = "L15";
+//NET "TONE[3]"  LOC = "K15";
+//NET "TONE[2]"  LOC = "K16";
+//NET "TONE[1]"  LOC = "J16";
+//NET "TONE[0]"  LOC = "N15";
+
+NET "CLK"		LOC =  "A8";
+// Output
+NET "P"			LOC = "T14";
+// 7 Segment Display
+NET "SEGD[7]"  LOC = "F13"; // A
+NET "SEGD[6]"  LOC = "E13"; // B
+NET "SEGD[5]"  LOC = "G15"; // ...
+NET "SEGD[4]"  LOC = "H13";
+NET "SEGD[3]"  LOC = "J14";
+NET "SEGD[2]"  LOC = "E14";
+NET "SEGD[1]"  LOC = "G16"; // G
+NET "SEGD[0]"  LOC = "H14"; // D.P
+
+NET "SEGA[3]"  LOC = "G14";
+NET "SEGA[2]"  LOC = "G12";
+NET "SEGA[1]"  LOC = "G13";
+NET "SEGA[0]"  LOC = "F12";
+// Flash Memory
+NET "DATA[7]" LOC = "R3";
+NET "DATA[6]" LOC = "R1";
+NET "DATA[5]" LOC = "P1";
+NET "DATA[4]" LOC = "P2";
+NET "DATA[3]" LOC = "N1";
+NET "DATA[2]" LOC = "N2";
+NET "DATA[1]" LOC = "M1";
+NET "DATA[0]" LOC = "M2";
+
+NET "ADDR[23]" LOC = "C3";
+NET "ADDR[22]" LOC = "A3";
+NET "ADDR[21]" LOC = "M4";
+NET "ADDR[20]" LOC = "D3";
+NET "ADDR[19]" LOC = "G5";
+NET "ADDR[18]" LOC = "H3";
+NET "ADDR[17]" LOC = "G4";
+NET "ADDR[16]" LOC = "L4";
+NET "ADDR[15]" LOC = "F3";
+NET "ADDR[14]" LOC = "M3";
+NET "ADDR[13]" LOC = "L5";
+NET "ADDR[12]" LOC = "N3";
+NET "ADDR[11]" LOC = "F5";
+NET "ADDR[10]" LOC = "F4";
+NET "ADDR[9]" LOC = "E3";
+NET "ADDR[8]" LOC = "G3";
+NET "ADDR[7]" LOC = "K4";
+NET "ADDR[6]" LOC = "H4";
+NET "ADDR[5]" LOC = "K3";
+NET "ADDR[4]" LOC = "J4";
+NET "ADDR[3]" LOC = "L3";
+NET "ADDR[2]" LOC = "K5";
+NET "ADDR[1]" LOC = "J3";
+
+NET "EppAstb"  LOC = "N8"; # Bank = 5, Pin name = IO_L32P_5/GCLK2, Type = GCLK, Signal name = U-FLAGA
+NET "EppDstb"  LOC = "P7"; # Bank = 5, Pin name = IO, Type = I/O, Signal name = U-FLAGB
+NET "EppWr"    LOC = "N7"; # Bank = 5, Pin name = IO_L30N_5, Type = I/O, Signal name = U-FLAGC
+NET "EppWait"  LOC = "N5"; # Bank = , Pin name = IO, Type = I/O, Signal name = U-SLRD
+NET "EppDB<0>" LOC = "N12"; # Bank = 4, Pin name = IO/VREF_4, Type = VREF, Signal name = U-FD0
+NET "EppDB<1>" LOC = "P12"; # Bank = 4, Pin name = IO_L25N_4, Type = I/O, Signal name = U-FD1
+NET "EppDB<2>" LOC = "N11"; # Bank = 4, Pin name = IO_L27P_4/D1, Type = DUAL, Signal name = U-FD2
+NET "EppDB<3>" LOC = "P11"; # Bank = 4, Pin name = IO_L28N_4, Type = I/O, Signal name = U-FD3
+NET "EppDB<4>" LOC = "N10"; # Bank = 4, Pin name = IO_L29P_4, Type = I/O, Signal name = U-FD4
+NET "EppDB<5>" LOC = "P10"; # Bank = 4, Pin name = IO_L30N_4/D2, Type = DUAL, Signal name = U-FD5
+NET "EppDB<6>" LOC = "M10"; # Bank = 4, Pin name = IO_L29N_4, Type = I/O, Signal name = U-FD6
+NET "EppDB<7>" LOC = "R10"; # Bank = 4, Pin name = IO_L30P_4/D3, Type = DUAL, Signal name = U-FD7
+
+
+NET "MemOE" LOC = "K2"; # Bank = 6, Pin name = IO_L24P_6, Type = I/O, Signal name = OE
+NET "MemWR" LOC = "T3"; # Bank = 5, Pin name = IO_L01N_5/RDWR_B, Type = DUAL, Signal name = WE
+
+NET "RamAdv" LOC = "B1"; # Bank = 7, Pin name = IO_L01P_7/VRN_7, Type = DCI, Signal name = MT-ADV
+NET "RamCS" LOC = "K1"; # Bank = 6, Pin name = IO, Type = I/O, Signal name = MT-CE
+NET "RamClk" LOC = "C2"; # Bank = 7, Pin name = IO_L16N_7, Type = I/O, Signal name = MT-CLK
+NET "RamCRE" LOC = "L2"; # Bank = 6, Pin name = IO_L22P_6, Type = I/O, Signal name = MT-CRE
+NET "RamLB" LOC = "J1"; # Bank = 6, Pin name = IO_L40P_6/VREF_6, Type = VREF, Signal name = MT-LB
+NET "RamUB" LOC = "J2"; # Bank = 6, Pin name = IO_L40N_6, Type = I/O, Signal name = MT-UB
+NET "RamWait" LOC = "C1"; # Bank = 7, Pin name = IO_L01N_7/VRP_7, Type = DCI, Signal name = MT-WAIT
+
+#NET "FlashByte" LOC = "F5"; # Bank = 7, Pin name = IO_L23P_7, Type = I/O, Signal name = BYTE#Cluj Board !!!!!NOT AVAILABLE FOR PHOENIX prototype
+NET "FlashRp" LOC = "T4"; # Bank = 5, Pin name = IO_L10N_5/VRP_5, Type = DCI, Signal name = RP#
+NET "FlashCS" LOC = "E4"; # Bank = 7, Pin name = IO_L21P_7, Type = I/O, Signal name = ST-CE
+NET "FlashStSts" LOC = "R4"; # Bank = 5, Pin name = IO_L10P_5/VRN_5, Type = DCI, Signal name = ST-STS

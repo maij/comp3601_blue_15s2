@@ -1,0 +1,14 @@
+NET "TONE[5]"  LOC = "M16";
+NET "TONE[4]"  LOC = "L15";
+NET "TONE[3]"  LOC = "K15";
+NET "TONE[2]"  LOC = "K16";
+NET "TONE[1]"  LOC = "J16";
+NET "TONE[0]"  LOC = "N15";
+
+NET "VOL[3]"	LOC = "J13"; // right button
+NET "VOL[2]"	LOC = "K14";
+NET "VOL[1]"	LOC = "K13";
+NET "VOL[0]"	LOC = "K12"; // left button
+
+NET "CLK"		LOC =  "A8";
+NET "P"			LOC = "T14";
