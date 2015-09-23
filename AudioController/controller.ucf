@@ -46,14 +46,6 @@ NET "SEGA[2]"  LOC = "G12";
 NET "SEGA[1]"  LOC = "G13";
 NET "SEGA[0]"  LOC = "F12";
 // Flash Memory
-NET "DATA[7]" LOC = "R3";
-NET "DATA[6]" LOC = "R1";
-NET "DATA[5]" LOC = "P1";
-NET "DATA[4]" LOC = "P2";
-NET "DATA[3]" LOC = "N1";
-NET "DATA[2]" LOC = "N2";
-NET "DATA[1]" LOC = "M1";
-NET "DATA[0]" LOC = "M2";
 
 NET "ADDR[23]" LOC = "C3";
 NET "ADDR[22]" LOC = "A3";
@@ -78,6 +70,23 @@ NET "ADDR[4]" LOC = "J4";
 NET "ADDR[3]" LOC = "L3";
 NET "ADDR[2]" LOC = "K5";
 NET "ADDR[1]" LOC = "J3";
+
+NET "MemDB<0>" LOC = "M2" | PULLUP ; # Bank = 6, Pin name = IO_L20N_6, Type = I/O, Signal name = DB0
+NET "MemDB<1>" LOC = "M1" | PULLUP ; # Bank = 6, Pin name = IO_L20P_6, Type = I/O, Signal name = DB1
+NET "MemDB<2>" LOC = "N2" | PULLUP ; # Bank = 6, Pin name = IO_L17N_6, Type = I/O, Signal name = DB2
+NET "MemDB<3>" LOC = "N1" | PULLUP ; # Bank = 6, Pin name = IO_L17P_6/VREF_6, Type = VREF, Signal name = DB3
+NET "MemDB<4>" LOC = "P2" | PULLUP ; # Bank = 6, Pin name = IO_L16N_6, Type = I/O, Signal name = DB4
+NET "MemDB<5>" LOC = "P1" | PULLUP ; # Bank = 6, Pin name = IO_L01P_6/VRN_6, Type = DCI, Signal name = DB5
+NET "MemDB<6>" LOC = "R1" | PULLUP ; # Bank = 6, Pin name = IO_L01N_6/VRP_6, Type = DCI, Signal name = DB6
+NET "MemDB<7>" LOC = "R3" | PULLUP ; # Bank = 5, Pin name = IO_L01P_5/CS_B, Type = DUAL, Signal name = DB7
+NET "MemDB<8>" LOC = "H1" | PULLUP ; # Bank = 7, Pin name = IO_L40N_7/VREF_7, Type = VREF, Signal name = DB8
+NET "MemDB<9>" LOC = "G1" | PULLUP ; # Bank = 7, Pin name = IO_L40P_7, Type = I/O, Signal name = DB9
+NET "MemDB<10>" LOC = "G2" | PULLUP ; # Bank = 7, Pin name = IO, Type = I/O, Signal name = DB10
+NET "MemDB<11>" LOC = "F2" | PULLUP ; # Bank = 7, Pin name = IO_L22N_7, Type = I/O, Signal name = DB11
+NET "MemDB<12>" LOC = "E1" | PULLUP ; # Bank = 7, Pin name = IO_L20N_7, Type = I/O, Signal name = DB12
+NET "MemDB<13>" LOC = "D1" | PULLUP ; # Bank = 7, Pin name = IO_L17N_7, Type = I/O, Signal name = DB13
+NET "MemDB<14>" LOC = "E2" | PULLUP ; # Bank = 7, Pin name = IO_L20P_7, Type = I/O, Signal name = DB14
+NET "MemDB<15>" LOC = "D2" | PULLUP ; # Bank = 7, Pin name = IO_L17P_7, Type = I/O, Signal name = DB15
 
 NET "EppAstb"  LOC = "N8"; # Bank = 5, Pin name = IO_L32P_5/GCLK2, Type = GCLK, Signal name = U-FLAGA
 NET "EppDstb"  LOC = "P7"; # Bank = 5, Pin name = IO, Type = I/O, Signal name = U-FLAGB

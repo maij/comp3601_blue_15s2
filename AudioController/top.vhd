@@ -47,8 +47,9 @@ entity DemoWithMemCfg is
           EppDB      : inout std_logic_vector (7 downto 0); 
           MemDB      : inout std_logic_vector (15 downto 0);
 			 
-			 led			: out   std_logic_vector (7 downto 0);
-			 BTN			: in 	  std_logic
+			 BTN			: in 	  std_logic;
+
+			 dataout    : inout   std_logic_vector (15 downto 0)
 			 );
 end DemoWithMemCfg;
 
@@ -136,32 +137,51 @@ architecture BEHAVIORAL of DemoWithMemCfg is
    
    
 	
+		signal data	: std_logic_vector(15 downto 0);	
 	
-	signal DataFromMem: std_logic_vector(15 downto 0);	-- Right now its 8 bits, might change to 16 later???
-		
+	signal dataHigh	: std_logic_vector(7 downto 0);	
+	signal test_count : integer range 0 to 50 := 0; 
+	signal stage : integer range 0 to 10 := 0; 	
+
+	
 	signal memRead	: std_logic;	
 	signal readAck	: std_logic;		
 	signal Datardy	: std_logic;	
 	signal DataAck	: std_logic;		
-	
+	signal lock: std_logic := '0';
 	
 	
 	
 begin
 
-	--Memory Handshaking system
 
 
-	process (BTN, ReadAck) 
+	process (BTN, clk) -- Do a double read cycle
 			Begin
-				if BTN = '1' then
+				if (BTN'event and BTN = '1' and stage = 0) then
+					stage <= 1;
 					memRead <= '1';
 				end if;
-				if ReadAck = '1' then
-					memRead <= '0';
+				
+				if (clk'event and clk = '1' AND stage /= 0) then
+					test_count <= test_count + 1;
+					if test_count = 50 then
+						test_count <= 0;
+					end if;
 				end if;
+				
+				if (test_count = 5 ) then
+					memRead <= '0';
+					stage <= 1;
+				elsif (test_count = 45) And stage = 2 then
+					memRead <= '0';
+					stage <= 0;
+				elsif (test_count = 40) and stage = 1 then
+					memRead <= '1';
+					stage <= 2;
+	end if;		
+				
 	end process;
-
 	process (DataRdy) 
 			Begin
 				if DataRdy = '1' then
@@ -171,13 +191,15 @@ begin
 				end if;
 	end process;
 
-	led <= DataFromMem(15 downto 8);
 
-
-
-	----
-
-
+	process (Data)
+		Begin
+			if (stage = 1) then 
+				DataHigh <= data(7 downto 0);
+			else
+				DataOut <= DataHigh & data(7 downto 0);
+			end if;
+	end process;
 
 
 
@@ -241,7 +263,7 @@ begin
 					 ReadReq => MemRead,
 					ReadAck => ReadAck,
 					DataRdy => DataRdy,
-					DataOut => DataFromMem,
+					DataOut => data,
 					DataAck=> DataAck
 
 					 

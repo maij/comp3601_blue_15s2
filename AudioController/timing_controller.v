@@ -30,6 +30,7 @@ module timing_controller (CLK, BPM, MODE, NOTE, START, VOL, DONE);
 	end
 	// Do something so that all the notes start at the beginning of a tone
 	// Perhaps an output to the top module to draw notes from.
+	// OR: Just have a slower build up in volume
 	always @ (posedge slowCLK) begin
 		if (START) begin
 			DONE <= 0;
@@ -40,8 +41,6 @@ module timing_controller (CLK, BPM, MODE, NOTE, START, VOL, DONE);
 				SLURRED : begin if (counter <= DURATION)         VOL = 4'hf; else if (VOL > 0) VOL = VOL - 1; end
 			endcase
 			// Reset counter once duration reached
-			// IDEA: Instead of just enabling and disabling, control volume in this block and make it trail off rather than
-			// an immediate cut off
 			if (counter == DURATION) begin
 				counter <= 0;
 				DONE <= 1;

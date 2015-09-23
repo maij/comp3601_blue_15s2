@@ -385,19 +385,14 @@ process (ReadReq, DataAck, clk)
 	BEGIN
 
 		if (ReadReq = '1') then
-			ReadAck <= '1';
 			MemReadSig <= '1';
 			redir <= '1';
 		end if;
-		if (ReadReq = '0') then
-			ReadAck <= '0';				-- Drop the ACK one the req is no longer high
-		end if;
-		
 		
 		if (MemReadSig = '1' and (clk'event and clk = '1')) then
 			test_count <= test_count + 1;
 		end if;
-		if (test_count = 10) then
+		if (test_count = 8) then
 			DataFromMem <= EppRdDataOut;
 			MemReadSig <= '0';
 			test_count <= 0;
