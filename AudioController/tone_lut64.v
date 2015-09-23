@@ -3,6 +3,7 @@ module tone_lut64 (input [5:0] tone, output [13:0] sixty_fourth_period);
 	//these constants define the number of 100Mhz cycles needed to emulate each note frequency, divided by 64 to get
 	//a 64th of  the waveform, to use PWM accurately
 	parameter
+				REST= 14'd1000,	// give a small delay between look-up table advances
 				C3  = 14'd11945,
 				C3S = 14'd11275,
 				D3  = 14'd10642,
@@ -56,7 +57,7 @@ module tone_lut64 (input [5:0] tone, output [13:0] sixty_fourth_period);
 				B6  = 14'd791;
 				
 	assign sixty_fourth_period =
-										(tone == 6'd0)  ? 0	 :
+										(tone == 6'd0)  ? REST:
 									   (tone == 6'd1)  ? C3  :
 									   (tone == 6'd2)  ? C3S :
 									   (tone == 6'd3)  ? D3  :

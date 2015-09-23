@@ -43,6 +43,7 @@ module display(CLK, BPM ,SEGA, SEGD);
 		//active contains state of whether you've finished the note or not
 		
 		//selecting the digit to display
+		// TODO: Display state on the first digit, e.g. P for paused
 	if (waveCount < KHZ_WAVE/4) begin
 			SEGA = DISP_OFF;
 			CURRENT_DIG = 4'd0;

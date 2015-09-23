@@ -4,14 +4,14 @@ module tone(CLK, TONE, VOL, P);
 	input			[3:0]  VOL;		// Enable Pin
 	output 					P;		// PWM Square Wave
 	reg [5:0] lookup_value;		// 6-bit sin-wave lookup value
-	wire [13:0] period;			// 14-bit value to count up to
-	wire [7:0] duty_cmp;
-	reg [13:0] counter;			// 14-bit counter
+	wire [13:0] 	 period;			// 14-bit value to count up to
+	wire [7:0] 	  duty_cmp;
+	reg [13:0] 		counter;			// 14-bit counter
 	
 	// PWM Output module
 	// Note that enable is modified to include TONE not being a rest note
 	// This prevents the pesky ticking noise when the tone was 0.
-	pwm pwm_block (CLK, duty_cmp, VOL[3:0]*(TONE != 0), P);
+	pwm pwm_block (CLK, duty_cmp, VOL[3:0]*(TONE != 6'd0), P);
 	tone_lut64 tone_lut_block (TONE, period);
 	sin_lut sin_lut_block (lookup_value, duty_cmp);
 	
