@@ -53,21 +53,21 @@ module audio_player(CLK, BPM_UP, BPM_DOWN, PB_GO, /*TONE,MODE*/, RST, LEDS, SEGA
 		SLURRED  = 2'b10,
 		BPM_COMM = 2'b11;
 	
-	reg START;
+	reg PLAY;
 	reg [7:0] BPM;
 	
 	initial begin
-		BPM   <= 8'd80;
-		START <= 0;
+		BPM  <= 8'd80;
+		PLAY <= 0;
 	end
 	
 	always @(posedge PB_GO) begin
-		START <= 1;
+		PLAY <= ~PLAY;
 	end
 	
-	// Update BPM
-	always @ (CLK) begin
-		if (START && (DATA[15:14] == BPM_COMM))
+	// Update BPM with the falling edge of DONE to allow for all the bits to be loaded from RAM
+	always @ (negedge DONE) begin
+		if (PLAY && (DATA[15:14] == BPM_COMM))
 			BPM <= DATA[7:0];
 	// else, update from motion_sensor
 	end
@@ -81,9 +81,10 @@ module audio_player(CLK, BPM_UP, BPM_DOWN, PB_GO, /*TONE,MODE*/, RST, LEDS, SEGA
 	DemoWithMemCfg memory_ctrl_blk (.clk(CLK), .EppAstb(EppAstb), .EppDstb(EppDstb), .EppWr(EppWr), .FlashStSts(FlashStSts), 
 				     .RamWait(RamWait), .EppWait(EppWait), .FlashCS(FlashCS), .FlashRp(FlashRp), .MemAdr(ADDR), .MemOe(MemOe),
 					  .MemWr(MemWr), .RamAdv(RamAdv), .RamClk(RamClk), .RamCre(RamCre), .RamCS(RamCS), .RamLB(RamLB), .RamUB(RamUB), 
-					  .MemDB(MemDB), .EppDB(EppDB), .BTN(DONE), .dataOut(DATA));
-	timing_controller timing_ctrl_blk (CLK, BPM, MODE, NOTE, START, VOL, DONE);
+					  .MemDB(MemDB), .EppDB(EppDB), .BTN(DONE & PLAY), .dataOut(DATA));
+	timing_controller timing_ctrl_blk (CLK, BPM, MODE, NOTE, PLAY, VOL, DONE);
 	display  disp_blk (CLK, BPM, SEGA, SEGD);
-	tone     tone_blk (CLK, TONE, VOL, P);
+	// VOL * PLAY disables audio output when paused
+	tone     tone_blk (CLK, TONE, VOL * PLAY, P);
 	
 endmodule
