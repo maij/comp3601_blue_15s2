@@ -25,7 +25,7 @@ use ieee.numeric_std.ALL;
 library UNISIM;
 use UNISIM.Vcomponents.ALL;
 
-entity DemoWithMemCfg is
+entity memory_controller is
    port ( clk        : in    std_logic; 
           EppAstb    : in    std_logic; 
           EppDstb    : in    std_logic; 
@@ -51,9 +51,9 @@ entity DemoWithMemCfg is
 
 			 dataout    : inout   std_logic_vector (15 downto 0)
 			 );
-end DemoWithMemCfg;
+end memory_controller;
 
-architecture BEHAVIORAL of DemoWithMemCfg is
+architecture BEHAVIORAL of memory_controller is
    attribute BOX_TYPE   : string ;
    signal XLXN_1     : std_logic_vector (7 downto 0);
    signal XLXN_6     : std_logic;

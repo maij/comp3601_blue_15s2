@@ -78,7 +78,7 @@ module audio_player(CLK, BPM_UP, BPM_DOWN, PB_GO, /*TONE,MODE*/, RST, LEDS, SEGA
 	
 	// assign LEDS = DATA[15:8];  //High Bytes (BPM Command/ Tone)
 	assign LEDS = DATA[7:0]; //Low Bytes (BPM/ Duration)
-	DemoWithMemCfg memory_ctrl_blk (.clk(CLK), .EppAstb(EppAstb), .EppDstb(EppDstb), .EppWr(EppWr), .FlashStSts(FlashStSts), 
+	memory_controller memory_ctrl_blk (.clk(CLK), .EppAstb(EppAstb), .EppDstb(EppDstb), .EppWr(EppWr), .FlashStSts(FlashStSts), 
 				     .RamWait(RamWait), .EppWait(EppWait), .FlashCS(FlashCS), .FlashRp(FlashRp), .MemAdr(ADDR), .MemOe(MemOe),
 					  .MemWr(MemWr), .RamAdv(RamAdv), .RamClk(RamClk), .RamCre(RamCre), .RamCS(RamCS), .RamLB(RamLB), .RamUB(RamUB), 
 					  .MemDB(MemDB), .EppDB(EppDB), .BTN(DONE & PLAY), .dataOut(DATA));
