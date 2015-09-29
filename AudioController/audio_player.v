@@ -1,4 +1,4 @@
-module audio_player(CLK, BPM_UP, BPM_DOWN, PB_GO, /*TONE,MODE*/, RST, LEDS, SEGA, SEGD, P,
+module audio_player(CLK, PB_GO, /*TONE,MODE*/, RST, LEDS, SEGA, SEGD, P,
 						  MemOe, MemWr, FlashRp, FlashCS, RamCS, ADDR,
 						  EppAstb, EppDstb, EppWr, FlashStSts, RamWait, EppWait,
 						  RamAdv, RamClk, RamCre, RamCS, RamLB, RamUB, EppDB, MemDB
@@ -6,8 +6,6 @@ module audio_player(CLK, BPM_UP, BPM_DOWN, PB_GO, /*TONE,MODE*/, RST, LEDS, SEGA
 	input 			CLK; 	// 100MHz clock input
 	// I/O
 	// Push buttons
-	input 			 BPM_UP;
-	input 		  BPM_DOWN;
 	input 				 RST;
 	input 			  PB_GO; 	// Play command input from push-button
 	// 7-Seg Display
@@ -83,7 +81,7 @@ module audio_player(CLK, BPM_UP, BPM_DOWN, PB_GO, /*TONE,MODE*/, RST, LEDS, SEGA
 					  .MemWr(MemWr), .RamAdv(RamAdv), .RamClk(RamClk), .RamCre(RamCre), .RamCS(RamCS), .RamLB(RamLB), .RamUB(RamUB), 
 					  .MemDB(MemDB), .EppDB(EppDB), .BTN(DONE & PLAY), .dataOut(DATA));
 	timing_controller timing_ctrl_blk (CLK, BPM, MODE, NOTE, PLAY, VOL, DONE);
-	display  disp_blk (CLK, BPM, SEGA, SEGD);
+	display  disp_blk (CLK, BPM, PLAY, SEGA, SEGD);
 	// VOL * PLAY disables audio output when paused
 	tone     tone_blk (CLK, TONE, VOL * PLAY, P);
 	

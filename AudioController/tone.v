@@ -8,10 +8,11 @@ module tone(CLK, TONE, VOL, P);
 	wire [7:0] 	  duty_cmp;
 	reg [13:0] 		counter;			// 14-bit counter
 	
+	parameter TONE_MAX = 6'd48;
 	// PWM Output module
 	// Note that enable is modified to include TONE not being a rest note
 	// This prevents the pesky ticking noise when the tone was 0.
-	pwm pwm_block (CLK, duty_cmp, VOL[3:0]*(TONE != 6'd0), P);
+	pwm pwm_block (CLK, duty_cmp, VOL[3:0]*(TONE != 6'd0 && TONE <= TONE_MAX), P);
 	tone_lut64 tone_lut_block (TONE, period);
 	sin_lut sin_lut_block (lookup_value, duty_cmp);
 	

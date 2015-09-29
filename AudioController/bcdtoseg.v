@@ -55,7 +55,8 @@ module bcdtoseg(nLT, nRBI, A3, A2, A1, A0, nBI,
 				4'd6:     nSEGOUT = ~7'b1011111;
 				4'd7:     nSEGOUT = ~7'b1110000;
 				4'd8:     nSEGOUT = ~7'b1111111;
-				4'd9:     nSEGOUT = ~7'b1111011; 
+				4'd9:     nSEGOUT = ~7'b1111011;
+				4'hF:		 nSEGOUT = ~7'b1100111;	// Special Pause Display
 				default:  nSEGOUT = ~7'b0000000;
 			endcase
 		end
