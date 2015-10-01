@@ -49,7 +49,8 @@ entity memory_controller is
 			 
 			 BTN			: in 	  std_logic;
 
-			 dataout    : inout   std_logic_vector (15 downto 0)
+			 dataout    : inout   std_logic_vector (15 downto 0);
+			 Reset		: in std_logic
 			 );
 end memory_controller;
 
@@ -120,11 +121,10 @@ architecture BEHAVIORAL of memory_controller is
              MemAdr          : out   std_logic_vector (23 downto 1);
 				 
 				 ReadReq: in std_logic;
-				ReadAck: out std_logic;
 				DataRdy: out std_logic;
-				DataOut :out std_logic_vector(15 downto 0);
-				DataAck: in std_logic
-
+				DataOut :out std_logic_vector(7 downto 0);
+				DataAck: in std_logic;
+				Reset				 : in std_logic
 				 
 				 
 );
@@ -137,15 +137,14 @@ architecture BEHAVIORAL of memory_controller is
    
    
 	
-		signal data	: std_logic_vector(15 downto 0);	
+		signal data	: std_logic_vector(7 downto 0);	
 	
 	signal dataHigh	: std_logic_vector(7 downto 0);	
-	signal test_count : integer range 0 to 50 := 0; 
+	signal test_count : integer range 0 to 21 := 0; 
 	signal stage : integer range 0 to 10 := 0; 	
 
 	
-	signal memRead	: std_logic;	
-	signal readAck	: std_logic;		
+	signal memRead	: std_logic;			
 	signal Datardy	: std_logic;	
 	signal DataAck	: std_logic;		
 	signal lock: std_logic := '0';
@@ -165,18 +164,15 @@ begin
 				
 				if (clk'event and clk = '1' AND stage /= 0) then
 					test_count <= test_count + 1;
-					if test_count = 50 then
-						test_count <= 0;
-					end if;
 				end if;
 				
-				if (test_count = 5 ) then
+				if (test_count = 4 ) then
 					memRead <= '0';
 					stage <= 1;
-				elsif (test_count = 45) And stage = 2 then
+				elsif (test_count = 20) And stage = 2 then
 					memRead <= '0';
 					stage <= 0;
-				elsif (test_count = 40) and stage = 1 then
+				elsif (test_count = 15) and stage = 1 then
 					memRead <= '1';
 					stage <= 2;
 	end if;		
@@ -261,12 +257,11 @@ begin
                 MemDB(15 downto 0)=>MemDB(15 downto 0),
 					 
 					 ReadReq => MemRead,
-					ReadAck => ReadAck,
 					DataRdy => DataRdy,
 					DataOut => data,
-					DataAck=> DataAck
+					DataAck=> DataAck,
 
-					 
+					 Reset => Reset
 					 
 					 );
    

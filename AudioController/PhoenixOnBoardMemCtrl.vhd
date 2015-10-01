@@ -233,17 +233,23 @@ entity PhoenixOnBoardMemCtrl is
 
 
 		ReadReq: in std_logic;
-		ReadAck: out std_logic;
 		DataRdy: out std_logic;
-		DataOut :out std_logic_vector(15 downto 0);
-		DataAck: in std_logic
-
-
+		DataOut :out std_logic_vector(7 downto 0);
+		DataAck: in std_logic;
+		Reset: in std_logic
 
        );
 end PhoenixOnBoardMemCtrl;
 
+
 architecture Behavioral of PhoenixOnBoardMemCtrl is
+
+component debounce
+  PORT( clk     : IN  STD_LOGIC;  
+        input  : IN  STD_LOGIC;  
+        output  : OUT STD_LOGIC); 
+		  
+ end component;
 
 ------------------------------------------------------------------------
 -- Constant and Signal Declarations
@@ -362,11 +368,17 @@ signal ctlMsmWrCmd : std_logic;
 signal ctlEppRdCycleInDummy : std_logic;
 signal ctlMsmStartInDummy : std_logic;
 signal regEppAdrInDummy : std_logic_vector(7 downto 0);
+signal ctlMsmDwrInDummy :std_logic;
+signal EppWrDataInDummy : std_logic_vector(7 downto 0);
+
 signal MemReadSig : std_logic;
-signal test_count : integer range 0 to 10 := 0; 
+signal counter : integer range 0 to 10 := 0; 
 signal redir : std_logic;
 
 signal DataFromMem : std_logic_vector(7 downto 0);
+signal Rst			: std_logic := '0';
+signal stage : integer range 0 to 10 := 0; 	
+signal counter2 : integer range 0 to 91 := 0; 
 ------------------------------------------------------------------------
 -- Module Implementation
 ------------------------------------------------------------------------
@@ -378,7 +390,9 @@ begin
 
 	ctlEppRdCycleInDummy <= ctlEppRdCycleIn or MemReadSig;
 	ctlMsmStartInDummy <= ctlMsmStartIn or MemReadSig;
-	DataOut <= "00000000" & DataFromMem;
+	ctlMsmDwrInDummy <= ctlMsmDwrIn or Rst;
+
+	DataOut <= DataFromMem;
 	
 	
 process (ReadReq, DataAck, clk) 
@@ -390,12 +404,12 @@ process (ReadReq, DataAck, clk)
 		end if;
 		
 		if (MemReadSig = '1' and (clk'event and clk = '1')) then
-			test_count <= test_count + 1;
+			counter <= counter + 1;
 		end if;
-		if (test_count = 8) then
+		if (counter = 8) then
 			DataFromMem <= EppRdDataOut;
 			MemReadSig <= '0';
-			test_count <= 0;
+			counter <= 0;
 			DataRdy <= '1';
 		end if;
 		
@@ -405,25 +419,67 @@ process (ReadReq, DataAck, clk)
 		end if;
 end process;
 		
-process (redir) 
+process (redir, stage) 
 	Begin
-		if redir = '0' then
+		if stage = 2 then
+			regEppAdrInDummy <= "00000001";		
+		elsif stage = 4 then
+			regEppAdrInDummy <= "00000010";		
+		elsif stage = 6 then			
+			regEppAdrInDummy <= "00000011";					
+		elsif redir = '0' then
 			regEppAdrInDummy <= regEppAdrIn;		
 		else
 			regEppAdrInDummy <= "00000110";
 		end if;
 	end process;
 	
-
-
-
 -------------------------------
 
+process (reset, counter2)
 
+	Begin
+		if (Reset = '1')  then
+			stage <= 1;
+		elsif (counter2 = 15) then
+			stage <= 2;
+		elsif (counter2 = 30) then
+			stage <= 3;
+		elsif (counter2 = 45) then
+			stage <= 4;
+		elsif (counter2 = 60) then
+			stage <= 5;
+		elsif (counter2 = 75) then
+			stage <= 6;
+		elsif (counter2 = 90) then
+			stage <= 0;		
+		end if;
+		
 
+		
+end process;
 
-
-
+process (clk)
+	begin
+		if stage = 1 then
+			counter2 <= 1;
+		elsif (clk'event and clk = '1' and stage /= 0 and reset = '0') then
+			counter2 <= counter2 + 1;
+		end if;
+end process;
+		
+process (stage)
+	Begin
+	EppWrDataInDummy <= EppWrDataIn;
+	rst <= '0';
+	if stage = 2 or stage = 4 or stage = 6 then
+		EppWrDataInDummy <= 	"00000000";
+		rst <= '1';
+	else 
+		rst <= '0';
+		EppWrDataInDummy <= EppWrDataIn;
+	end if;
+end process;
 
 
 
@@ -618,77 +674,77 @@ ctlMsmRamCs <= '0'
      -- Flag to tell the Epp state machine the current access cycle ended
 
  -- Memory Control Register
- process (clk, ctlMsmDwrIn)
+ process (clk, ctlMsmDwrInDummy)
   begin
    if clk = '1' and clk'Event then
-    if ctlMsmDwrIn = '1' and                    -- write cycle
+    if ctlMsmDwrInDummy = '1' and                    -- write cycle
        regEppAdrInDummy(2 downto 0) = MemCtrlReg and -- MemCtrlReg addressed
        ComponentSelect = '1' then        -- PhoenixOnBoardMemCtrl component selected
-     regMemCtl <= EppWrDataIn;
+     regMemCtl <= EppWrDataInDummy;
     end if;
    end if;
   end process;
 
  -- Memory Address Register/Counter
-MsmAdrL: process (clk, ctlMsmDwrIn, ctlMsmAdrInc)
+MsmAdrL: process (clk, ctlMsmDwrInDummy, ctlMsmAdrInc)
   begin
    if clk = '1' and clk'Event then
     if ctlMsmAdrInc = '1' then                 -- automatic memory cycle
      regMemAdr(7 downto 0) <= regMemAdr(7 downto 0) + 1; -- inc. address 
-    elsif ctlMsmDwrIn = '1' and                -- Epp write cycle
+    elsif ctlMsmDwrInDummy = '1' and                -- Epp write cycle
           regEppAdrInDummy(2 downto 0) = MemAdrL and-- MemAdrL reg. addressed
           ComponentSelect = '1' then         -- PhoenixOnBoardMemCtrl comp. selected
-     regMemAdr(7 downto 0) <= EppWrDataIn;     -- update MemAdrL content
+     regMemAdr(7 downto 0) <= EppWrDataInDummy;     -- update MemAdrL content
     end if;
    end if;
   end process;
  carryoutL <= '1' when regMemAdr(7 downto 0) = x"ff" else 
               '0';                             -- Lower byte carry out
 
-MsmAdrM: process (clk, ctlMsmDwrIn, ctlMsmAdrInc)
+MsmAdrM: process (clk, ctlMsmDwrInDummy, ctlMsmAdrInc)
   begin
    if clk = '1' and clk'Event then
     if ctlMsmAdrInc = '1' and                  -- automatic memory cycle
        carryoutL = '1' then                    -- lower byte rollover
      regMemAdr(15 downto 8) <= regMemAdr(15 downto 8) + 1;--inc. address
-    elsif ctlMsmDwrIn = '1' and                -- Epp write cycle
+    elsif ctlMsmDwrInDummy = '1' and                -- Epp write cycle
           regEppAdrInDummy(2 downto 0) = MemAdrM and-- MemAdrM reg. addressed
           ComponentSelect = '1' then         -- PhoenixOnBoardMemCtrl comp. selected
-     regMemAdr(15 downto 8) <= EppWrDataIn;    -- update MemAdrM content
+     regMemAdr(15 downto 8) <= EppWrDataInDummy;    -- update MemAdrM content
     end if;
    end if;
   end process;
  carryoutM <= '1' when regMemAdr(15 downto 8) = x"ff" else 
               '0';                             -- Middle byte carry out
 
-MsmAdrH: process (clk, ctlMsmDwrIn, ctlMsmAdrInc)
+MsmAdrH: process (clk, ctlMsmDwrInDummy, ctlMsmAdrInc)
   begin
    if clk = '1' and clk'Event then
     if ctlMsmAdrInc = '1' and                  -- automatic memory cycle
        carryoutL = '1' and                     -- lower byte rollover
        carryoutM = '1' then                    -- middle byte rollover
      regMemAdr(23 downto 16) <= regMemAdr(23 downto 16) + 1;--inc. addr.
-    elsif ctlMsmDwrIn = '1' and                -- Epp write cycle
+    elsif ctlMsmDwrInDummy = '1' and                -- Epp write cycle
           regEppAdrInDummy(2 downto 0) = MemAdrH and-- MemAdrM reg. addressed
           ComponentSelect = '1' then         -- PhoenixOnBoardMemCtrl comp. selected
-     regMemAdr(23 downto 16) <= EppWrDataIn;-- update MemAdrH 
+     regMemAdr(23 downto 16) <= EppWrDataInDummy;-- update MemAdrH 
     end if;
    end if;
   end process;
 
 -- Memory write data holding register 
- process (clk, ctlMsmDwrIn)
+ process (clk, ctlMsmDwrInDummy)
   begin
    if clk = '1' and clk'Event then
-    if ctlMsmDwrIn = '1' and                   -- Epp write cycle
+    if ctlMsmDwrInDummy = '1' and                   -- Epp write cycle
        (regEppAdrInDummy(2 downto 0) = RamAutoRW or  -- | Any register holding
         regEppAdrInDummy(2 downto 0) = FlashAutoRW or-- | data to be written
         regEppAdrInDummy(2 downto 0) = MemDataWr) and-- | to memory
        ComponentSelect = '1' then
 	   if regMemAdr(0) = '0' then -- even address
-        regMemWrData(7 downto 0) <= EppWrDataIn; -- update lower regMemWrData
+        regMemWrData(7 downto 0) <= EppWrDataInDummy; -- update lower regMemWrData
 		else                   -- odd address 
-        regMemWrData(15 downto 8) <= EppWrDataIn; -- update upper regMemWrData
+        regMemWrData(15 downto 8) <= EppWrDataInDummy; -- update upper regMemWrData
     	end if;
 	 end if;
    end if;
