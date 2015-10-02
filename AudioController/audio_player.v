@@ -44,6 +44,7 @@ module audio_player(CLK, PB_PLY, /*TONE,MODE*/, PB_RST, LEDS, SEGA, SEGD, P,
 	wire  [5:0] TONE;
 	wire [15:0] DATA;
 	wire        DONE;
+	wire 	  END_SONG;
 	
 
 	parameter
@@ -54,14 +55,20 @@ module audio_player(CLK, PB_PLY, /*TONE,MODE*/, PB_RST, LEDS, SEGA, SEGD, P,
 	
 	reg PLAY;
 	reg [7:0] BPM;
+	reg LATCH_PB_PLY;
 	
 	initial begin
 		BPM  <= 8'd80;
 		PLAY <= 0;
+		LATCH_PB_PLY <= 0;
 	end
 	
-	always @(posedge PB_PLY) begin
-		PLAY <= ~PLAY;
+	always @(posedge CLK) begin
+		// Toggle only on rising edge/ falling edge
+		if (PB_PLY && ~LATCH_PB_PLY)
+			PLAY <= ~PLAY;
+		
+		LATCH_PB_PLY <= PB_PLY;
 	end
 	
 	// Update BPM with the falling edge of DONE to allow for all the bits to be loaded from RAM
@@ -71,16 +78,17 @@ module audio_player(CLK, PB_PLY, /*TONE,MODE*/, PB_RST, LEDS, SEGA, SEGD, P,
 	// else, update from motion_sensor
 	end
 	// Grabbing everything out of the DATA register
-	assign MODE = (DATA[15:14] == BPM_COMM) ? NORMAL :  DATA[15:14];
-	assign NOTE = (DATA[15:14] == BPM_COMM) ? 4'b0	 :  DATA[3:0];
-	assign TONE = DATA[13:8];
+	assign MODE 	 = (DATA[15:14] == BPM_COMM) ? NORMAL :  DATA[15:14];
+	assign NOTE 	 = (DATA[15:14] == BPM_COMM) ? 4'b0	 :  DATA[3:0];
+	assign TONE 	 = DATA[13:8];
+	assign END_SONG = PLAY && (DATA[15:14] == BPM_COMM) && (DATA[7:0] == 0);
 	
 	// assign LEDS = DATA[15:8];  //High Bytes (BPM Command/ Tone)
 	assign LEDS = DATA[7:0]; //Low Bytes (BPM/ Duration)
 	memory_controller memory_ctrl_blk (.clk(CLK), .EppAstb(EppAstb), .EppDstb(EppDstb), .EppWr(EppWr), .FlashStSts(FlashStSts), 
 				     .RamWait(RamWait), .EppWait(EppWait), .FlashCS(FlashCS), .FlashRp(FlashRp), .MemAdr(ADDR), .MemOe(MemOe),
 					  .MemWr(MemWr), .RamAdv(RamAdv), .RamClk(RamClk), .RamCre(RamCre), .RamCS(RamCS), .RamLB(RamLB), .RamUB(RamUB), 
-					  .MemDB(MemDB), .EppDB(EppDB), .BTN(DONE & PLAY), .dataOut(DATA), .Reset(PB_RST));
+					  .MemDB(MemDB), .EppDB(EppDB), .BTN(DONE & PLAY), .dataOut(DATA), .Reset(PB_RST || END_SONG));
 	timing_controller timing_ctrl_blk (CLK, BPM, MODE, NOTE, PLAY, VOL, DONE);
 	display  disp_blk (CLK, BPM, PLAY, SEGA, SEGD);
 	// VOL * PLAY disables audio output when paused
