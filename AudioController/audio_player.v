@@ -1,10 +1,12 @@
-module audio_player(CLK, PB_PLY, /*TONE,MODE*/, PB_RST, LEDS, SEGA, SEGD, P,
+module audio_player(CLK, PB_PLY, VOL, PB_RST, LEDS, SEGA, SEGD, P,
 						  MemOe, MemWr, FlashRp, FlashCS, RamCS, ADDR,
 						  EppAstb, EppDstb, EppWr, FlashStSts, RamWait, EppWait,
 						  RamAdv, RamClk, RamCre, RamCS, RamLB, RamUB, EppDB, MemDB
 						  );
 	input 			CLK; 	// 100MHz clock input
 	// I/O
+	// Switches
+	input 		[3:0]  VOL;		// 4-bit volume
 	// Push buttons
 	input 			 PB_RST;
 	input 			 PB_PLY; 	// Play command input from push-button
@@ -38,14 +40,13 @@ module audio_player(CLK, PB_PLY, /*TONE,MODE*/, PB_RST, LEDS, SEGA, SEGD, P,
 	output RamUB;
 	inout [7:0] EppDB;
 							
-	wire  [3:0]  VOL;	  
 	wire  [1:0] MODE;
 	wire  [3:0] NOTE;
 	wire  [5:0] TONE;
 	wire [15:0] DATA;
 	wire        DONE;
 	wire 	  END_SONG;
-	
+	wire 			  EN;
 
 	parameter
 		NORMAL   = 2'b00,
@@ -89,9 +90,9 @@ module audio_player(CLK, PB_PLY, /*TONE,MODE*/, PB_RST, LEDS, SEGA, SEGD, P,
 				     .RamWait(RamWait), .EppWait(EppWait), .FlashCS(FlashCS), .FlashRp(FlashRp), .MemAdr(ADDR), .MemOe(MemOe),
 					  .MemWr(MemWr), .RamAdv(RamAdv), .RamClk(RamClk), .RamCre(RamCre), .RamCS(RamCS), .RamLB(RamLB), .RamUB(RamUB), 
 					  .MemDB(MemDB), .EppDB(EppDB), .BTN(DONE & PLAY), .dataOut(DATA), .Reset(PB_RST || END_SONG));
-	timing_controller timing_ctrl_blk (CLK, BPM, MODE, NOTE, PLAY, VOL, DONE);
+	timing_controller timing_ctrl_blk (CLK, BPM, MODE, NOTE, PLAY, EN, DONE);
 	display  disp_blk (CLK, BPM, PLAY, SEGA, SEGD);
 	// VOL * PLAY disables audio output when paused
-	tone     tone_blk (CLK, TONE, VOL * PLAY, P);
+	tone     tone_blk (CLK, TONE, EN & PLAY ,VOL, P);
 	
 endmodule

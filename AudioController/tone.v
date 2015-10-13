@@ -1,7 +1,8 @@
-module tone(CLK, TONE, VOL, P);
+module tone(CLK, TONE, EN, VOL, P);
 	input 				 CLK;		// 100MHz clock input
 	input 		[5:0] TONE; 	// 6-bit tone code
-	input			[3:0]  VOL;		// Enable Pin
+	input					  EN;		// Enable Pin
+	input			[3:0]  VOL;		// 4-bit volume
 	output 					P;		// PWM Square Wave
 	reg [5:0] lookup_value;		// 6-bit sin-wave lookup value
 	wire [13:0] 	 period;			// 14-bit value to count up to
@@ -12,7 +13,7 @@ module tone(CLK, TONE, VOL, P);
 	// PWM Output module
 	// Note that enable is modified to include TONE not being a rest note
 	// This prevents the pesky ticking noise when the tone was 0.
-	pwm pwm_block (CLK, duty_cmp, VOL[3:0]*(TONE != 6'd0 && TONE <= TONE_MAX), P);
+	pwm pwm_block (CLK, duty_cmp, VOL, P);
 	tone_lut64 tone_lut_block (TONE, period);
 	sin_lut sin_lut_block (lookup_value, duty_cmp);
 	
@@ -22,7 +23,7 @@ module tone(CLK, TONE, VOL, P);
 	end
 	always @(posedge CLK) begin
 		//increment the counter at each clock cycle
-		if (VOL) begin
+		if (EN && (VOL != 4'h0)) begin
 			counter <= counter + 1;
 			//makes sure the counter resets if it excedes max value, if switching to a higher tone
 			if (counter > counter_max) counter <= 0;

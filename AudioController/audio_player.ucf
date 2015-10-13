@@ -28,6 +28,12 @@ NET "LEDS[7]" LOC = "R16";
 //NET "TONE[1]"  LOC = "J16";
 //NET "TONE[0]"  LOC = "N15";
 
+
+NET "VOL[3]"  LOC = "K15";
+NET "VOL[2]"  LOC = "K16";
+NET "VOL[1]"  LOC = "J16";
+NET "VOL[0]"  LOC = "N15";
+
 NET "CLK"		LOC =  "A8";
 // Output
 NET "P"			LOC = "T14"; NET "P" slew=FAST;

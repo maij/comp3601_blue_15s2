@@ -2,14 +2,14 @@
  * This module handles duration of note, style of play (i.e. normal, staccato or slurred) and BPM control.
  */
  
-module timing_controller (CLK, BPM, MODE, NOTE, START, VOL, DONE);
+module timing_controller (CLK, BPM, MODE, NOTE, START, EN, DONE);
 	input 				 CLK; 	// 100 MHz clock
 	input [1:0]		   MODE;		// Note style
 	input [3:0]			NOTE;		// Note type, e.g. crotchet
 	input 			  START;    // Start flag to enable playback
 	input [7:0] 	 	 BPM;		// 8-bit BPM value
 
-	output reg [3:0]	 VOL;		// Output enable (to control duration)
+	output reg 			  EN;		// Output enable (to control duration)
 	wire [15:0]	  DURATION;		// Note duration
 	output reg 			DONE;		// Flag to request the next note
 	
@@ -24,7 +24,7 @@ module timing_controller (CLK, BPM, MODE, NOTE, START, VOL, DONE);
 	duration_lut dur_lut_blk (NOTE[3:0],  DURATION);
 	BPM_prescaler bpm_pre_blk (CLK, BPM, slowCLK);
 	initial begin
-		VOL 	  <= 4'hf;
+		EN 	  <= 1;
 		counter <= 0;
 		DONE 	  <= 0;
 	end
@@ -36,9 +36,9 @@ module timing_controller (CLK, BPM, MODE, NOTE, START, VOL, DONE);
 			DONE <= 0;
 			counter <= counter + 1;
 			case (MODE) 
-				NORMAL  : begin if (counter <= DURATION/128*125) VOL = 4'hf; else if (VOL > 0) VOL = VOL - 1; end
-				STACCATO: begin if (counter <= DURATION/128*102) VOL = 4'hf; else if (VOL > 0) VOL = VOL - 1; end
-				SLURRED : begin if (counter <= DURATION)         VOL = 4'hf; else if (VOL > 0) VOL = VOL - 1; end
+				NORMAL  : begin if (counter <= DURATION/128*125) EN <= 1; else EN <= 0; end
+				STACCATO: begin if (counter <= DURATION/128*102) EN <= 1; else EN <= 0; end
+				SLURRED : begin if (counter <= DURATION)         EN <= 1; end
 			endcase
 			// Reset counter once duration reached
 			if (counter == DURATION) begin
