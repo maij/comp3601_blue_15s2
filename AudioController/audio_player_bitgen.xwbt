@@ -1,0 +1,8 @@
+INTSTYLE=ise
+INFILE=C:\Users\Mark Johnson\Documents\GitHub\comp3601_blue_15s2\AudioController\audio_player.ncd
+OUTFILE=C:\Users\Mark Johnson\Documents\GitHub\comp3601_blue_15s2\AudioController\audio_player.bit
+FAMILY=Spartan3
+PART=xc3s400-4ft256
+WORKINGDIR=C:\Users\Mark Johnson\Documents\GitHub\comp3601_blue_15s2\AudioController
+LICENSE=WebPack
+USER_INFO=210734866_0_0_432

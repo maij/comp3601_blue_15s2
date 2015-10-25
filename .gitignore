@@ -4,16 +4,12 @@
 *.filter
 *.projectmgr
 *.attr
-*.xwbt
 *.html
 *.vPreview
 *.wdb
 *.edif
-*.xise
-*.gise
 *.tcl
 *.bit
-*.ncd
 *.ngm
 *.mrp
 *.map
