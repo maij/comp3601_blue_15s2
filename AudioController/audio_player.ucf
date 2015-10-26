@@ -18,6 +18,17 @@ NET "LEDS[5]" LOC = "M13";
 NET "LEDS[6]" LOC = "P14";
 NET "LEDS[7]" LOC = "R16";
 
+// I2C Pins
+//NET "i2c_beat"   	LOC = "R16"; 
+
+								 //VGA header pins
+NET "i2c_gnd"   LOC = "M15"; //pin 4
+NET "i2c_sda"   LOC = "N16"; //pin 3
+NET "i2c_scl"   LOC = "R6";  //pin 2
+NET "i2c_vcc"   LOC = "R7";  //pin 1
+
+NET "i2c_rst"   LOC = "J13"; //i2c reset button, BTN0
+
 // Switches
 //NET "MODE[1]"  LOC = "N16";
 //NET "MODE[0]"  LOC = "M15";

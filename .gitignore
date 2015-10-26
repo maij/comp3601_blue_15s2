@@ -44,3 +44,8 @@
 *.ref
 *.bin
 *.cpj
+*.ncd
+*.xwbt
+AudioController/AudioController.gise
+AudioController/AudioController.xise
+AudioController/toplevel.ucf

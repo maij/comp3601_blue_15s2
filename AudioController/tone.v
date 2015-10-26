@@ -23,7 +23,7 @@ module tone(CLK, TONE, EN, VOL, P);
 	end
 	always @(posedge CLK) begin
 		//increment the counter at each clock cycle
-		if (EN && (VOL != 4'h0)) begin
+		if (EN && (VOL != 4'h0) && (TONE != 6'd0 && TONE <= TONE_MAX)) begin
 			counter <= counter + 1;
 			//makes sure the counter resets if it excedes max value, if switching to a higher tone
 			if (counter > counter_max) counter <= 0;
